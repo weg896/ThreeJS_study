@@ -1,0 +1,88 @@
+<html>
+	<head>
+		<title>My first Three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<canvas id="mainCanvas"></canvas>
+		<script src="three.js"></script>
+		<script src="stats.min.js"></script>
+		<script>
+			var stat = null;
+			function init(){
+				stat = new Stats();
+				stat.domElement.style.position = 'absolute';
+				stat.domElement.style.right = '0px';
+				stat.domElement.style.top = '0px';
+				
+				document.body.appendChild(stat.domElement);
+			}
+				
+			init();
+			/////////////////////////////////////////////////////
+			var renderer = new THREE.WebGLRenderer({
+    			canvas: document.getElementById('mainCanvas')
+			});
+			renderer.setClearColor(0x000000); // black
+
+			/////////////////////////////////////////////////////
+			var scene = new THREE.Scene();
+
+			/////////////////////////////////////////////////////
+			var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 400);
+			camera.position.set(10, 11, 11);
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
+			scene.add(camera);
+
+
+			/////////////////////////////////////////////////////
+			var material = new THREE.MeshLambertMaterial({
+				color:0xff00ff,
+				emissive:0xfc0cec,
+				wireframe:true
+			});
+			
+			var material1 = new THREE.MeshBasicMaterial({
+				color:0xff00ff
+			});
+			
+			/////////////////////////////////////////////////////
+			var geometry = new THREE.CubeGeometry(2,2,3);
+			
+			var cube = new THREE.Mesh(geometry, material);
+			scene.add(cube);
+
+			/////////////////////////////////////////////////////
+			
+			var iterator = 0;
+			/*
+			var renderAnimate = function(){
+				requestAnimationFrame(renderAnimate);
+				stat.begin();
+				cube.rotation.set(Math.cos(iterator+=0.01),1,1);
+				cube.scale.set(Math.cos(iterator+=0.01),1,1);
+				
+				renderer.render(scene, camera);
+				stat.end();
+			}
+			
+			renderAnimate();
+			
+			*/
+			
+			function draw(){
+				stat.begin();
+				cube.rotation.set(Math.cos(iterator+=0.01),1,1);
+				cube.scale.set(Math.cos(iterator+=0.01),1,1);
+				renderer.render(scene, camera);
+				
+				stat.end();
+				requestAnimationFrame(draw);
+			}
+			draw();
+		</script>
+	</body>
+</html>
